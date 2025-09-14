@@ -1,0 +1,44 @@
+[
+  {
+    "id": "bk-01",
+    "title": "اقتراح العناوين البحثية — دليل عملي",
+    "author": "د. الزرّاعي",
+    "category": "الباحث العلمي",
+    "tags": [
+      "ماجستير",
+      "دكتوراه"
+    ],
+    "pdfUrl": "https://alzarraei-gpts.github.io/Arabic-GPT-Hub-books/the-emerging-machine.pdf",
+    "coverUrl": "https://raw.githubusercontent.com/your/repo/main/books/bk-01.jpg",
+    "viewUrl": "#",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "bk-02",
+    "title": "أساسيات المنهجية العلمية",
+    "author": "د. الزرّاعي",
+    "category": "الباحث العلمي",
+    "tags": [
+      "منهجية",
+      "توثيق"
+    ],
+    "pdfUrl": "https://raw.githubusercontent.com/your/repo/main/books/bk-02.pdf",
+    "coverUrl": "https://raw.githubusercontent.com/your/repo/main/books/bk-02.jpg",
+    "viewUrl": "#",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "bk-03",
+    "title": "دليل كتابة المحتوى العربي",
+    "author": "د. الزرّاعي",
+    "category": "المحتوى واللغة",
+    "tags": [
+      "تحرير",
+      "صياغة"
+    ],
+    "pdfUrl": "https://raw.githubusercontent.com/your/repo/main/books/bk-03.pdf",
+    "coverUrl": "https://raw.githubusercontent.com/your/repo/main/books/bk-03.jpg",
+    "viewUrl": "#",
+    "downloadUrl": "#"
+  }
+]

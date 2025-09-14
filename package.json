@@ -1,0 +1,28 @@
+{
+    "name": "bots-hub-2025",
+    "private": true,
+    "version": "0.0.1",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview --open"
+    },
+    "dependencies": {
+        "framer-motion": "^11.2.10",
+        "three": "^0.161.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "@tailwindcss/aspect-ratio": "latest",
+        "@tailwindcss/forms": "latest",
+        "@tailwindcss/line-clamp": "latest",
+        "@tailwindcss/typography": "latest",
+        "@vitejs/plugin-react": "latest",
+        "autoprefixer": "latest",
+        "postcss": "latest",
+        "tailwindcss": "latest",
+        "vite": "latest"
+    }
+}

@@ -1,0 +1,265 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth gradient animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-slow {
+  background-size: 200% 200% !important;
+  animation: gradientShift 14s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-120%);
+  }
+
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+.animate-shine {
+  animation: shine 2.2s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .electric-border::before {
+    animation-duration: 5s;
+    filter: blur(6px);
+    opacity: 0.7;
+  }
+}
+
+/* Liquid Ether background approximation */
+.liquid-ether {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -10;
+  overflow: hidden;
+}
+
+.liquid-ether .blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(40px);
+  opacity: 0.16;
+  mix-blend-mode: screen;
+}
+
+.liquid-ether .b1 {
+  width: 60vmax;
+  height: 60vmax;
+  background: radial-gradient(closest-side, rgba(163, 230, 53, 0.7), transparent 70%);
+  top: -10%;
+  left: -10%;
+  animation: float1 18s ease-in-out infinite;
+}
+
+.liquid-ether .b2 {
+  width: 55vmax;
+  height: 55vmax;
+  background: radial-gradient(closest-side, rgba(56, 189, 248, 0.7), transparent 70%);
+  bottom: -20%;
+  right: -10%;
+  animation: float2 22s ease-in-out infinite;
+}
+
+.liquid-ether .b3 {
+  width: 50vmax;
+  height: 50vmax;
+  background: radial-gradient(closest-side, rgba(244, 63, 94, 0.6), transparent 70%);
+  top: 10%;
+  right: 5%;
+  animation: float3 26s ease-in-out infinite;
+}
+
+@keyframes float1 {
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(5%, -4%, 0);
+  }
+}
+
+@keyframes float2 {
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-6%, 5%, 0);
+  }
+}
+
+@keyframes float3 {
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(3%, 6%, 0);
+  }
+}
+
+/* Mobile + reduced motion tuning */
+@media (max-width: 768px) {
+  .liquid-ether .blob {
+    opacity: 0.10;
+    filter: blur(24px);
+  }
+
+  .liquid-ether .b1 {
+    width: 70vmin;
+    height: 70vmin;
+  }
+
+  .liquid-ether .b2 {
+    width: 60vmin;
+    height: 60vmin;
+  }
+
+  .liquid-ether .b3 {
+    display: none;
+  }
+
+  .gooey {
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .liquid-ether .b1,
+  .liquid-ether .b2,
+  .liquid-ether .b3 {
+    animation: none !important;
+  }
+
+  .electric-border::before {
+    animation: none !important;
+  }
+
+  .animate-shine,
+  .animate-spin {
+    animation: none !important;
+  }
+}
+
+/* Pixel Card corners */
+.pixel-card {
+  position: relative;
+  background-clip: padding-box;
+}
+
+.pixel-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.pixel-card::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  background:
+    radial-gradient(4px 4px at 0 0, rgba(255, 255, 255, 0.15) 99%, transparent) top left,
+    radial-gradient(4px 4px at 100% 0, rgba(255, 255, 255, 0.15) 99%, transparent) top right,
+    radial-gradient(4px 4px at 0 100%, rgba(255, 255, 255, 0.15) 99%, transparent) bottom left,
+    radial-gradient(4px 4px at 100% 100%, rgba(255, 255, 255, 0.15) 99%, transparent) bottom right;
+  background-repeat: no-repeat;
+  background-size: 8px 8px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Electric Border effect for CTA */
+.electric-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.electric-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: conic-gradient(from 0deg,
+      rgba(163, 230, 53, 0.0), rgba(163, 230, 53, 0.8), rgba(16, 185, 129, 0.9), rgba(56, 189, 248, 0.8), rgba(244, 63, 94, 0.7), rgba(163, 230, 53, 0.0));
+  filter: blur(8px) brightness(1.1);
+  animation: spin 3.2s linear infinite;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 2px;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Gooey nav container */
+.gooey {
+  filter: url('#gooey');
+}
+
+/* خط افتراضي + لون خلفية عام */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-neutral-950 text-neutral-100;
+  font-family: "Noto Sans Arabic", system-ui, -apple-system, Segoe UI, Arial,
+    sans-serif;
+  line-height: 1.7;
+}
+
+/* اختيار النص */
+::selection {
+  background: rgba(190, 242, 100, 0.35);
+  /* lime-300/35 */
+  color: #fff;
+}
+
+/* تفضيل تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
