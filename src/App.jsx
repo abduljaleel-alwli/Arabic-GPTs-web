@@ -759,10 +759,7 @@ export default function App() {
                                         <option key={s.id} value={s.id}>
                                             {s.label}
                                         </option>
-                                                ))}
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
+                                    ))}
                                 </select>
                             </div>
                         </div>
@@ -898,6 +895,9 @@ export default function App() {
                                             </div>
                                         </div>
                                     ))}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </section>
                             ))}
                         </div>
