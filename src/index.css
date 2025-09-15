@@ -243,7 +243,7 @@ html {
 
 body {
   @apply bg-neutral-950 text-neutral-100;
-  font-family: "Noto Sans Arabic", system-ui, -apple-system, Segoe UI, Arial,
+  font-family: "Cairo", system-ui, -apple-system, Segoe UI, Arial,
     sans-serif;
   line-height: 1.7;
 }

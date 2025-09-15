@@ -47,7 +47,7 @@ export default {
                 }
             },
             fontFamily: {
-                arabic: ['"Noto Sans Arabic"', "system-ui", "sans-serif"]
+                arabic: ['"Cairo"', "system-ui", "sans-serif"]
             },
             boxShadow: {
                 'nv-glow': '0 10px 30px -10px rgba(118, 185, 0, 0.35)',
