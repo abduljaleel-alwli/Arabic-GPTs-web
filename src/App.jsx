@@ -596,6 +596,18 @@ export default function App() {
                                 <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_70%_30%,rgba(163,230,53,0.15),transparent)]" />
                             </motion.div>
                             </a>
+                            <a
+                                href="mailto:zraieee@gmail.com"
+                                target="_blank"
+                                rel="noopener"
+                                aria-label="Gmail"
+                                className="grid h-9 w-9 place-items-center rounded-xl bg-white/5 hover:bg-white/10 transition"
+                                title="Gmail"
+                            >
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="text-red-500">
+                                    <path d="M2 4h20a2 2 0 012 2v12a2 2 0 01-2 2H2a2 2 0 01-2-2V6a2 2 0 012-2zm10 7L2 6v12h20V6l-10 5z" />
+                                </svg>
+                            </a>
                             <a href="#/" className="focus:outline-none">
                             <strong className="text-lg md:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-lime-200 via-emerald-300 to-lime-200 text-transparent bg-clip-text drop-shadow-[0_2px_6px_rgba(16,185,129,0.25)] animate-gradient-slow">
                                 بوابة النماذج العربية الذكية
@@ -638,15 +650,15 @@ export default function App() {
                         <div className="flex items-center gap-0">
                             <span className="hidden md:inline text-xs text-white/70 mr-1">قنواتنا الرسمية</span>
                             <a
-                                href="https://wa.me/966552191598"
+                                href="https://www.facebook.com/alzarraei.gpts/"
                                 target="_blank"
                                 rel="noopener"
                                 aria-label="واتساب"
-                                className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition"
+                                className="grid h-9 w-9 place-items-center rounded-xl bg-white/5 hover:bg-white/10 transition"
                                 title="انضم عبر واتساب"
                             >
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="text-green-400">
-                                    <path d="M20.52 3.48A11.86 11.86 0 0012.06 0C5.44 0 .1 5.34.1 11.95c0 2.1.55 4.1 1.6 5.87L0 24l6.35-1.65a12 12 0 005.7 1.45h.01c6.61 0 11.95-5.34 11.95-11.95 0-3.2-1.25-6.2-3.49-8.37zM12.06 21.8h-.01c-1.85 0-3.66-.5-5.23-1.44l-.38-.23-3.76.98 1.01-3.66-.25-.38a9.82 9.82 0 01-1.5-5.1C1.94 6.5 6.6 1.85 12.06 1.85c2.6 0 5.04 1.02 6.88 2.87a9.7 9.7 0 012.83 6.87c0 5.46-4.65 10.21-9.71 10.21zm5.6-7.63c-.3-.15-1.77-.87-2.04-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.95 1.16-.18.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.51-1.78-1.68-2.08-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5h-.58c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.48.71.3 1.26.47 1.7.6.72.23 1.37.2 1.9.12.58-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.43-.07-.13-.27-.2-.57-.36z" />
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="text-blue-500">
+                                    <path d="M22 12a10 10 0 11-11.5 9.9V15H8v-3h2V9.7c0-2 1.2-3.2 3.1-3.2.9 0 1.8.1 2 .1V9H14c-1 0-1.3.6-1.3 1.2V12h2.6l-.4 3H12.7v6.9C18 22.7 22 17.9 22 12z" />
                                 </svg>
                             </a>
                             <a
@@ -654,7 +666,7 @@ export default function App() {
                                 target="_blank"
                                 rel="noopener"
                                 aria-label="تيليغرام"
-                                className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition"
+                                className="grid h-9 w-9 place-items-center rounded-xl bg-white/5 hover:bg-white/10 transition"
                                 title="قناة تيليغرام"
                             >
                                 <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="text-sky-400">
@@ -666,7 +678,7 @@ export default function App() {
                                 target="_blank"
                                 rel="noopener"
                                 aria-label="منصة إكس"
-                                className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition"
+                                className="grid h-9 w-9 place-items-center rounded-xl bg-white/5 hover:bg-white/10 transition"
                                 title="X (Twitter)"
                             >
                                 <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="text-white">
@@ -674,15 +686,27 @@ export default function App() {
                                 </svg>
                             </a>
                             <a
-                                href="https://www.youtube.com/@alzarraei-gpts"
+                                href="mailto:zraieee@gmail.com"
+                                target="_blank"
+                                rel="noopener"
+                                aria-label="Gmail"
+                                className="grid h-9 w-9 place-items-center rounded-xl bg-white/5 hover:bg-white/10 transition"
+                                title="Gmail"
+                            >
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="text-red-500">
+                                    <path d="M2 4h20a2 2 0 012 2v12a2 2 0 01-2 2H2a2 2 0 01-2-2V6a2 2 0 012-2zm10 7L2 6v12h20V6l-10 5z" />
+                                </svg>
+                            </a>
+                            <a
+                                href="https://www.paypal.com/paypalme/zraiee"
                                 target="_blank"
                                 rel="noopener"
                                 aria-label="يوتيوب"
-                                className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition"
+                                className="grid h-9 w-9 place-items-center rounded-xl bg-white/5 hover:bg-white/10 transition"
                                 title="يوتيوب"
                             >
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="text-rose-400">
-                                    <path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.3 3.5 12 3.5 12 3.5s-7.3 0-9.4.6A3 3 0 00.5 6.2 31.2 31.2 0 000 12a31.2 31.2 0 00.6 5.8 3 3 0 002.1 2.1c2.1.6 9.4.6 9.4.6s7.3 0 9.4-.6a3 3 0 002.1-2.1A31.2 31.2 0 0024 12a31.2 31.2 0 00-.5-5.8zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="text-blue-400">
+                                    <path d="M7 3h7a5 5 0 010 10H9l-1.2 8H4L7 3zm7 6a2 2 0 000-4H9.8L9 12h5a2 2 0 000-3z" />
                                 </svg>
                             </a>
                         </div>
