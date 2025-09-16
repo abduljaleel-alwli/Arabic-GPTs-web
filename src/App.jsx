@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import bgVideoUrl from "../1080-60fps-ai.mp4";
-// Use the new SVG logo from public
-const logoUrl = "src/assets/image/banner.png";
+// Use the logo image from public
+const logoUrl = "/logo.png";
 import { BOOKS as STATIC_BOOKS, SERIES as STATIC_SERIES } from "./data/books.js";
 
 // ترتيب مخصص للباقات على الصفحة الرئيسية
@@ -593,7 +593,7 @@ export default function App() {
                                 className="relative inline-grid w-10 h-10 place-items-center overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur"
                                 aria-hidden
                             >
-                                <img src={logoUrl} alt="Logo" className="h-full w-full object-contain" />
+                                <img src={logoUrl} alt="الشعار" className="h-full w-full object-contain" />
                                 <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_70%_30%,rgba(163,230,53,0.15),transparent)]" />
                             </motion.div>
                             </a>
