@@ -310,6 +310,8 @@ body {
     @apply inline-flex items-center gap-1 whitespace-nowrap rounded-xl px-3 py-2 text-xs md:text-sm border transition text-white/90;
     border-color: color-mix(in oklab, var(--nv-border), #000 10%);
     background: color-mix(in oklab, var(--nv-surface-2), transparent 40%);
+    text-align: left;
+    justify-content: flex-start;
   }
   .nv-chip[data-active="true"] {
     color: #fff;

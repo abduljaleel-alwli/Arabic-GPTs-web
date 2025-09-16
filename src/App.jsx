@@ -790,7 +790,7 @@ export default function App() {
                         <div className="flex flex-wrap items-start gap-3 rounded-3xl border border-white/10 bg-white/5 p-3">
                             {/* فلاتر الفئات */}
                             <div
-                                className={`relative flex flex-wrap gap-2 ${catsExpanded ? 'max-h-none overflow-visible' : 'max-h-10 overflow-hidden'}`}
+                                className={`relative basis-full flex flex-wrap justify-end gap-2 ${catsExpanded ? 'max-h-none overflow-visible' : 'max-h-10 overflow-hidden'}`}
                             >
                                 {categories.map((c) => {
                                     const Icon = CATEGORY_ICONS[c] || CATEGORY_ICONS.default;
