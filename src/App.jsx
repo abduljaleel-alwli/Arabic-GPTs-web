@@ -1374,6 +1374,7 @@ function GooeyNav({ route }) {
         { href: "#/", label: "الرئيسية" },
         { href: "#/books", label: "الكتب" },
         { href: "#/about", label: "من نحن" },
+        { href: "https://wa.me/966552191598", label: "اشتراك", external: true },
     ];
     return (
         <div className="mx-auto mt-3 max-w-7xl px-4 md:px-6">
@@ -1383,6 +1384,8 @@ function GooeyNav({ route }) {
                     <a
                         key={it.href}
                         href={it.href}
+                        target={it.external ? "_blank" : undefined}
+                        rel={it.external ? "noopener" : undefined}
                         className={`relative grid flex-1 place-items-center rounded-xl px-3 py-2 text-sm ${
                             (route === "/" && it.href === "#/") || (route !== "/" && `#${route}` === it.href)
                                 ? "bg-white/20 text-white"
