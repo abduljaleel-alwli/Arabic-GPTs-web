@@ -407,6 +407,11 @@ header a[href*="whatsapp.com"] {
   display: none !important;
 }
 
+/* Hide brand text link in header; keep logo icon only */
+header a.focus\:outline-none {
+  display: none !important;
+}
+
 /* Hide the inline label text (e.g., "تابعنا على") */
 header span[class*="md:inline"][class*="text-xs"][class*="mr-1"] {
   display: none !important;

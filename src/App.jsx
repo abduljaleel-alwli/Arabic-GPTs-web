@@ -3,6 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import bgVideoUrl from "../1080-60fps-ai.mp4";
 // Use the logo image from public
 const logoUrl = "/logo.png";
+// Import banner.png from src (not present in public)
+import bannerPng from "./assets/image/banner.png";
 import { BOOKS as STATIC_BOOKS, SERIES as STATIC_SERIES } from "./data/books.js";
 
 // ترتيب مخصص للباقات على الصفحة الرئيسية
@@ -1663,7 +1665,7 @@ const SAMPLE_BOOKS = [
         author: "د. الزرّاعي",
         category: "الباحث العلمي",
         tags: ["ماجستير", "دكتوراه"],
-        coverUrl: "/banner.png",
+        coverUrl: bannerPng,
         viewUrl: "#",
         downloadUrl: "#"
     },
@@ -1673,7 +1675,7 @@ const SAMPLE_BOOKS = [
         author: "د. الزرّاعي",
         category: "الباحث العلمي",
         tags: ["منهجية", "توثيق"],
-        coverUrl: "/banner.png",
+        coverUrl: bannerPng,
         viewUrl: "#",
         downloadUrl: "#"
     },
@@ -1683,7 +1685,7 @@ const SAMPLE_BOOKS = [
         author: "د. الزرّاعي",
         category: "المحتوى واللغة",
         tags: ["تحرير", "صياغة"],
-        coverUrl: "/banner.png",
+        coverUrl: bannerPng,
         viewUrl: "#",
         downloadUrl: "#"
     },
