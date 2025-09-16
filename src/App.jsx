@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import bgVideoUrl from "../1080-60fps-ai.mp4";
 // Use the new SVG logo from public
-const logoUrl = "/logo.svg";
+const logoUrl = "/banner.svg";
 import { BOOKS as STATIC_BOOKS, SERIES as STATIC_SERIES } from "./data/books.js";
 
 // ترتيب مخصص للباقات على الصفحة الرئيسية
