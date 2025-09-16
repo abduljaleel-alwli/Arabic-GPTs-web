@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true">
+  <defs>
+    <style>
+      .l{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:16}
+    </style>
+  </defs>
+  <!-- Brain split mark: left organic (brown), right circuit (green) -->
+  <path class="l" stroke="#8b5a2b" d="M120 28c-34 0-68 26-72 60-2 14 2 26 10 34-9 7-14 18-14 30 0 20 14 36 34 40-2 4-2 9-2 14 0 26 28 50 58 50h-10c-30 0-58-24-58-50 0-5 0-10 2-14-20-4-34-20-34-40 0-12 5-23 14-30-8-8-12-20-10-34 4-34 38-60 72-60"/>
+  <path class="l" stroke="#66bb3a" d="M136 28c34 0 68 26 72 60 2 14-2 26-10 34 9 7 14 18 14 30 0 20-14 36-34 40 2 4 2 9 2 14 0 26-28 50-58 50h10c30 0 58-24 58-50 0-5 0-10-2-14 20-4 34-20 34-40 0-12-5-23-14-30 8-8 12-20 10-34-4-34-38-60-72-60"/>
+  <!-- Mid split -->
+  <path class="l" stroke="#66bb3a" d="M128 28v200"/>
+  <!-- Right circuit nodes -->
+  <circle cx="172" cy="112" r="8" fill="#66bb3a"/>
+  <circle cx="164" cy="148" r="8" fill="#66bb3a"/>
+  <circle cx="148" cy="184" r="8" fill="#66bb3a"/>
+</svg>
+
