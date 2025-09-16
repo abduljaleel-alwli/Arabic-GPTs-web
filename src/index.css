@@ -363,3 +363,28 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Hide top header social channels and their labels */
+header a[href*="instagram.com"],
+header a[href*="facebook.com"],
+header a[href*="tiktok.com"],
+header a[href^="mailto:"],
+header a[href*="paypal.com"],
+header a[href*="linkedin.com"],
+header a[href*="t.me"],
+header a[href*="x.com"],
+header a[href*="youtube.com"],
+header a[href*="wa.me"],
+header a[href*="whatsapp.com"] {
+  display: none !important;
+}
+
+/* Hide the inline label text (e.g., "تابعنا على") */
+header span[class*="md:inline"][class*="text-xs"][class*="mr-1"] {
+  display: none !important;
+}
+
+/* Hide the XL-only list of channel names */
+header div[class*="xl:flex"][class*="gap-1"][class*="text-[11px]"] {
+  display: none !important;
+}
