@@ -1377,15 +1377,17 @@ function GooeyNav({ route }) {
     ];
     return (
         <div className="mx-auto mt-3 max-w-7xl px-4 md:px-6">
-            <div className="gooey relative mx-auto flex w-full items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-2">
+            {/* Removed gooey filter and transitions/hover effects from nav buttons */}
+            <div className="relative mx-auto flex w-full items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-2">
                 {items.map((it) => (
                     <a
                         key={it.href}
                         href={it.href}
-                        className={`relative grid flex-1 place-items-center rounded-xl px-3 py-2 text-sm transition ${(route === "/" && it.href === "#/") || (route !== "/" && `#${route}` === it.href)
-                            ? "bg-white/20 text-white"
-                            : "bg-white/0 hover:bg-white/10 text-white/80"
-                            }`}
+                        className={`relative grid flex-1 place-items-center rounded-xl px-3 py-2 text-sm ${
+                            (route === "/" && it.href === "#/") || (route !== "/" && `#${route}` === it.href)
+                                ? "bg-white/20 text-white"
+                                : "bg-transparent text-white/80"
+                        }`}
                     >
                         {it.label}
                     </a>
