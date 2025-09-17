@@ -24,6 +24,20 @@ import cover_8 from "../assets/covers/the-thinking-machine.jpg";
 // Base-aware URL for public logo fallback (works in dev and GitHub Pages)
 const LOGO = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/") + "logo.png";
 
+// Optional cover discovery for newly added books
+// If the specific JPG exists under assets/covers, use it; otherwise fall back to LOGO
+const COVER_MAP = import.meta && import.meta.glob
+    ? import.meta.glob("../assets/covers/*.jpg", { eager: true })
+    : {};
+const coverOf = (stem) => {
+    try {
+        const key = `../assets/covers/${stem}.jpg`;
+        const mod = COVER_MAP[key];
+        const url = (mod && (mod.default || mod)) || null;
+        return url || LOGO;
+    } catch { return LOGO; }
+};
+
 export const SERIES = [
   {
     id: "machine-series",
@@ -187,7 +201,7 @@ export const BOOKS = [
     categoryIds: ["series"],
     pdfUrl: pdf_9,
     downloadUrl: pdf_9,
-    coverUrl: LOGO,
+    coverUrl: coverOf("the-commanding-machine"),
     viewUrl: pdf_9,
   },
   {
@@ -202,7 +216,7 @@ export const BOOKS = [
     categoryIds: ["series"],
     pdfUrl: pdf_10,
     downloadUrl: pdf_10,
-    coverUrl: LOGO,
+    coverUrl: coverOf("the-instructing-machine"),
     viewUrl: pdf_10,
   },
   {
@@ -217,7 +231,7 @@ export const BOOKS = [
     categoryIds: ["series"],
     pdfUrl: pdf_11,
     downloadUrl: pdf_11,
-    coverUrl: LOGO,
+    coverUrl: coverOf("the-comparing-machine"),
     viewUrl: pdf_11,
   },
 ];
