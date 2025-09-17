@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import bgVideoUrl from "../1080-60fps-ai.mp4";
-// Use a base-aware public logo URL (works in dev and on GitHub Pages/subpaths)
-const logoUrl = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/") + "logo.png";
+// Use a base-aware public logo URL (SVG for crisp scaling on all DPIs)
+const logoUrl = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/") + "logo.svg";
 import { BOOKS as STATIC_BOOKS, SERIES as STATIC_SERIES } from "./data/books.js";
 
 // ترتيب مخصص للباقات على الصفحة الرئيسية

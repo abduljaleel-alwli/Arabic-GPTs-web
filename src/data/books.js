@@ -21,8 +21,8 @@ import cover_6 from "../assets/covers/the-interacting-machine.jpg";
 import cover_7 from "../assets/covers/the-learning-machine.jpg";
 import cover_8 from "../assets/covers/the-thinking-machine.jpg";
 
-// Base-aware URL for public logo fallback (works in dev and GitHub Pages)
-const LOGO = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/") + "logo.png";
+// Base-aware URL for public logo fallback (use SVG for better quality)
+const LOGO = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/") + "logo.svg";
 
 // Optional cover discovery for newly added books
 // Supports multiple formats like jpg/jpeg/png/webp; falls back to LOGO
