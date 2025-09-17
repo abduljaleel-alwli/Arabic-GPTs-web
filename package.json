@@ -3,18 +3,21 @@
     "private": true,
     "version": "0.0.1",
     "type": "module",
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build",
-        "preview": "vite preview --open"
-    },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --open",
+    "img:banner": "node scripts/process_images.mjs --task banner",
+    "img:covers": "node scripts/process_images.mjs --task covers",
+    "img:all": "node scripts/process_images.mjs --task all"
+  },
     "dependencies": {
         "framer-motion": "^11.2.10",
         "three": "^0.161.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },
-    "devDependencies": {
+  "devDependencies": {
         "@tailwindcss/aspect-ratio": "latest",
         "@tailwindcss/forms": "latest",
         "@tailwindcss/line-clamp": "latest",
@@ -23,6 +26,7 @@
         "autoprefixer": "latest",
         "postcss": "latest",
         "tailwindcss": "latest",
-        "vite": "latest"
-    }
+    "vite": "latest",
+    "sharp": "^0.33.4"
+  }
 }

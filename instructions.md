@@ -82,3 +82,25 @@
 ## الخاتمة
 (ملخص الفائدة وتجديد الارتباط بمبدأ "تجربة استخدام لا تُنسى")
 ```
+## Image Processing
+
+Use `scripts/process_images.mjs` to (1) rebuild the banner PNGs from `public/banner.svg` at correct sizes, and (2) generate responsive, optimized cover images (WebP/AVIF/JPEG) with a consistent width and optional aspect clamp.
+
+Commands:
+
+- `npm run img:banner` — outputs `src/assets/image/banner.png` (1440x720) and `src/assets/image/banner@2x.png` (2880x1440)
+- `npm run img:covers` — reads from `src/assets/covers` and writes responsive sets + `manifest.json` into `public/covers`
+- `npm run img:all` — runs both tasks
+
+Options (via CLI):
+
+- `--covers <dir>` override input covers directory
+- `--out <dir>` override output directory for optimized covers
+- `--banner <path>` override banner SVG source (default `public/banner.svg`)
+- `--banner-out <dir>` override banner PNG output directory (default `src/assets/image`)
+- `--aspect <W:H|auto>` clamp cover aspect ratio using entropy crop (default `auto`)
+
+Notes:
+
+- Requires `sharp` (installed as a devDependency). If missing, the script exits with an instruction to install it.
+- Cover outputs include multiple widths (480/720/960/1200) in both WebP and AVIF, plus one optimized 1200-wide JPEG for compatibility. A `manifest.json` is written to help wiring `<picture>` with `srcset` later.
