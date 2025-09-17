@@ -1632,6 +1632,7 @@ function PdfCover({ pdfUrl, coverUrl, title }) {
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
     const [dataUrl, setDataUrl] = useState(null);
+    const [coverOk, setCoverOk] = useState(true);
     const triedRef = useRef(false);
     const [inView, setInView] = useState(false);
 
@@ -1689,7 +1690,7 @@ function PdfCover({ pdfUrl, coverUrl, title }) {
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.4 }}
                 />
-            ) : coverUrl ? (
+            ) : (coverUrl && coverOk) ? (
                 <motion.img
                     src={coverUrl}
                     alt={title}
@@ -1697,6 +1698,7 @@ function PdfCover({ pdfUrl, coverUrl, title }) {
                     initial={{ scale: 1.01, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.4 }}
+                    onError={() => setCoverOk(false)}
                 />
             ) : null}
             {/* Hidden canvas used to render first page snapshot */}

@@ -25,9 +25,9 @@ import cover_8 from "../assets/covers/the-thinking-machine.jpg";
 const LOGO = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/") + "logo.png";
 
 // Optional cover discovery for newly added books
-// If the specific JPG exists under assets/covers, use it; otherwise fall back to LOGO
+// Supports multiple formats like jpg/jpeg/png/webp; falls back to LOGO
 const COVER_MAP = import.meta && import.meta.glob
-    ? import.meta.glob("../assets/covers/*.jpg", { eager: true })
+    ? import.meta.glob("../assets/covers/*.{jpg,jpeg,png,webp}", { eager: true })
     : {};
 const coverOf = (stem) => {
     try {
