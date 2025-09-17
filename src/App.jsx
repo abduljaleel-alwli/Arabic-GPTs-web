@@ -1372,7 +1372,7 @@ function BooksPage() {
                                         <div className="relative z-10">
                                             <div className="relative overflow-hidden rounded-xl bg-black/40">
                                                 <div className="relative aspect-[4/5]">
-                                                    <img src={b.coverUrl} alt={b.title} className="absolute inset-0 h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]" />
+                                                    <PdfCover pdfUrl={b.pdfUrl} coverUrl={b.coverUrl} title={b.title} />
                                                     <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/30 to-transparent" />
                                                     <div className="absolute inset-x-0 bottom-3 z-10 mx-3 grid grid-cols-2 gap-2">
                                                         <a
@@ -1629,14 +1629,15 @@ function AboutPage({ botsCount = 0, catsCount = 0, booksCount = 0 }) {
 }
 // غلاف PDF: يحاول استخراج الصفحة الأولى، وإلا يستخدم صورة احتياطية
 function PdfCover({ pdfUrl, coverUrl, title }) {
+    const containerRef = useRef(null);
     const canvasRef = useRef(null);
     const [dataUrl, setDataUrl] = useState(null);
     const triedRef = useRef(false);
     const [inView, setInView] = useState(false);
 
-    // Lazy observe when the canvas enters viewport
+    // Observe the container entering viewport
     useEffect(() => {
-        const node = canvasRef.current;
+        const node = containerRef.current;
         if (!node) return;
         const io = new IntersectionObserver((entries) => {
             for (const e of entries) {
@@ -1678,7 +1679,7 @@ function PdfCover({ pdfUrl, coverUrl, title }) {
     }, [pdfUrl, inView]);
 
     return (
-        <div className="relative h-full w-full">
+        <div ref={containerRef} className="relative h-full w-full">
             {dataUrl ? (
                 <motion.img
                     src={dataUrl}
@@ -1697,9 +1698,9 @@ function PdfCover({ pdfUrl, coverUrl, title }) {
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.4 }}
                 />
-            ) : (
-                <canvas ref={canvasRef} className="h-full w-full object-contain" />
-            )}
+            ) : null}
+            {/* Hidden canvas used to render first page snapshot */}
+            <canvas ref={canvasRef} className="hidden" />
         </div>
     );
 }
