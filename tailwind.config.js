@@ -1,4 +1,9 @@
 /** @type {import('tailwindcss').Config} */
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
+import aspectRatio from "@tailwindcss/aspect-ratio";
+import lineClamp from "@tailwindcss/line-clamp";
+
 export default {
     content: [
         "./index.html",
@@ -55,9 +60,9 @@ export default {
         }
     },
     plugins: [
-        require("@tailwindcss/forms"),
-        require("@tailwindcss/typography"),
-        require("@tailwindcss/aspect-ratio"),
-        require("@tailwindcss/line-clamp")
+        forms,
+        typography,
+        aspectRatio,
+        lineClamp,
     ]
 };
