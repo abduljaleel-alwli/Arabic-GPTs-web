@@ -342,6 +342,11 @@ body {
   .nv-select:focus-visible {
     box-shadow: 0 0 0 2px rgba(255,255,255,0.06), 0 0 0 6px var(--nv-focus);
   }
+  /* Ensure dropdown list text is readable on white native menus */
+  .nv-select option {
+    color: #111 !important;           /* black text for white popup */
+    background-color: #fff !important;/* keep menu background white */
+  }
 
   /* Link accent */
   .nv-link {
