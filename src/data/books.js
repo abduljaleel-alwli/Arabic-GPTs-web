@@ -21,6 +21,9 @@ import cover_6 from "../assets/covers/the-interacting-machine.jpg";
 import cover_7 from "../assets/covers/the-learning-machine.jpg";
 import cover_8 from "../assets/covers/the-thinking-machine.jpg";
 
+// Base-aware URL for public logo fallback (works in dev and GitHub Pages)
+const LOGO = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/") + "logo.png";
+
 export const SERIES = [
   {
     id: "machine-series",
@@ -184,7 +187,7 @@ export const BOOKS = [
     categoryIds: ["series"],
     pdfUrl: pdf_9,
     downloadUrl: pdf_9,
-    coverUrl: "/logo.png",
+    coverUrl: LOGO,
     viewUrl: pdf_9,
   },
   {
@@ -199,7 +202,7 @@ export const BOOKS = [
     categoryIds: ["series"],
     pdfUrl: pdf_10,
     downloadUrl: pdf_10,
-    coverUrl: "/logo.png",
+    coverUrl: LOGO,
     viewUrl: pdf_10,
   },
   {
@@ -214,7 +217,7 @@ export const BOOKS = [
     categoryIds: ["series"],
     pdfUrl: pdf_11,
     downloadUrl: pdf_11,
-    coverUrl: "/logo.png",
+    coverUrl: LOGO,
     viewUrl: pdf_11,
   },
 ];
