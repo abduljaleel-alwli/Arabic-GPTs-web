@@ -873,8 +873,15 @@ export default function App() {
                                         value={q}
                                         onChange={(e) => setQ(sanitizeText(e.target.value))}
                                         placeholder={'ابحث باسم البوت…'}
+                                        list="bot-names"
                                         className="flex-1 bg-transparent px-1 py-0.5 text-sm outline-none placeholder:text-white/50"
                                     />
+                                    {/* Native autocomplete dropdown with available bot names */}
+                                    <datalist id="bot-names">
+                                        {botTitles.map((t) => (
+                                            <option key={t} value={t} />
+                                        ))}
+                                    </datalist>
                                     {!!q && (
                                         <button
                                             onClick={() => { setQ(''); }}
@@ -1242,6 +1249,7 @@ export default function App() {
                                         setQ(sanitizeText(e.target.value));
                                         setSelectedIndex(0);
                                     }}
+                                    list="bot-names"
                                     className="w-full bg-transparent text-sm outline-none placeholder:text-white/50"
                                 />
                                 <kbd className="rounded-md border border-white/10 bg-black/40 px-2 py-1 text-[10px] text-white/70">
