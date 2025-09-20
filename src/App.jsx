@@ -224,7 +224,7 @@ export default function App() {
     const [paletteOpen, setPaletteOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [progress, setProgress] = useState(0);
-    const [bots, setBots] = useState(BOTS);
+    const [bots, setBots] = useState([]);
     const [botModal, setBotModal] = useState(null); // { type, bot }
 
     // تم إزالة مكونات المفضلة والوسوم من الواجهة
