@@ -25,7 +25,8 @@ BASE = Path(__file__).resolve().parent
 HUDUD_PATH = os.path.join(BASE, "حدود.docx")
 NOBTHA_PATH = os.path.join(BASE, "نبذة.docx")
 MITHAL_PATH = os.path.join(BASE, "مثال.docx")
-LINKS_PATH  = os.path.join(BASE, "روابط النسخة الكاملة.docx")
+# LINKS_PATH  = os.path.join(BASE, "روابط النسخة الكاملة.docx")
+LINKS_PATH  = os.path.join(BASE, "old.docx")
 OUTPUT_JSON = os.path.join(BASE, "output.json")
 
 
