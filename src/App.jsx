@@ -180,13 +180,13 @@ const CATEGORY_ACCENTS = {
 // اختيار ثابت للتدرّج بناءً على الفئة (مع تجزئة مستقرة للفئات غير المعرّفة)
 const pickAccentByCategory = (category) => {
     const c = (category || "").toString().trim();
-    if (CATEGORY_ACCENTS[c]) return "from-nvidia-600 via-emerald-500 to-nvidia-600";
+    if (CATEGORY_ACCENTS[c]) return "from-neutral-800 via-neutral-900 to-black";
     // تجزئة بسيطة وثابتة لإسناد لون من القائمة
     let hash = 0;
     for (let i = 0; i < c.length; i++) {
         hash = (hash * 31 + c.charCodeAt(i)) >>> 0;
     }
-    return "from-nvidia-600 via-emerald-500 to-nvidia-600";
+    return "from-neutral-800 via-neutral-900 to-black";
 };
 
 // مساعد لإرجاع لون البطاقة دائمًا حسب الفئة
@@ -973,7 +973,7 @@ export default function App() {
                                         <div key={`${pkg.name}-${cat.name}`} className="space-y-2">
                                             <div className="flex items-center gap-2 mb-1 justify-center">
                                                 <div className="hidden md:block h-px flex-1 bg-gradient-to-l from-white/10 to-transparent" />
-                                                <span className={`inline-flex items-center gap-1 text-sm md:text-base text-white/90 rounded-full border border-white/10 px-2 py-0.5 bg-gradient-to-br ${cat.accent} shadow-[0_0_18px_rgba(0,0,0,0.35)] ring-1 ring-white/10 backdrop-blur-sm animate-gradient-slow`}>
+                                                <span className={`inline-flex items-center gap-1 text-sm md:text-base text-white/90 rounded-full border border-white/10 px-2 py-0.5 bg-gradient-to-br from-neutral-700 to-neutral-900 shadow-[0_0_18px_rgba(0,0,0,0.35)] ring-1 ring-white/10 backdrop-blur-sm animate-gradient-slow`}>
                                                     {cat.name}
                                                 </span>
                                                 <span className="hidden md:inline text-xs text-white/60">{cat.rows.length} بوت</span>
@@ -990,7 +990,7 @@ export default function App() {
                                                             transition={{ duration: 0.3, ease: "easeOut" }}
                                                             className="pixel-card group relative overflow-hidden rounded-2xl bg-neutral-900/60 p-3 shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition will-change-transform"
                                                         >
-                                                            <div className={`absolute inset-0 opacity-60 bg-gradient-to-br ${getAccent(b)}`} />
+                                                            <div className={`absolute inset-0 opacity-60 bg-gradient-to-br from-neutral-800 via-neutral-900 to-black`} />
                                                             <div className="relative z-10 flex h-full flex-col">
                                                                 <div className="flex items-center gap-2 text-xs">
                                                                     <div className="ml-auto" />
@@ -999,13 +999,13 @@ export default function App() {
                                                                     {b.title}
                                                                 </h3>
                                                                 <div className="mt-2 grid grid-cols-3 gap-3 text-xs pb-2">
-                                                                    <button onClick={() => setBotModal({ type: "about", bot: b })} className="rounded-xl border border-white/15 bg-black px-2 py-1.5 font-bold text-white hover:bg-emerald-500 hover:text-black transition">
+                                                                    <button onClick={() => setBotModal({ type: "about", bot: b })} className="rounded-xl border border-white/15 bg-black px-2 py-1.5 font-bold text-white hover:bg-white/10 hover:text-white transition">
                                                                         نبذة
                                                                     </button>
-                                                                    <button onClick={() => setBotModal({ type: "limits", bot: b })} className="rounded-xl border border-white/15 bg-black px-2 py-1.5 font-bold text-white hover:bg-emerald-500 hover:text-black transition">
+                                                                    <button onClick={() => setBotModal({ type: "limits", bot: b })} className="rounded-xl border border-white/15 bg-black px-2 py-1.5 font-bold text-white hover:bg-white/10 hover:text-white transition">
                                                                         حدود
                                                                     </button>
-                                                                    <button onClick={() => setBotModal({ type: "example", bot: b })} className="rounded-xl border border-white/15 bg-black px-2 py-1.5 font-bold text-white hover:bg-emerald-500 hover:text-black transition">
+                                                                    <button onClick={() => setBotModal({ type: "example", bot: b })} className="rounded-xl border border-white/15 bg-black px-2 py-1.5 font-bold text-white hover:bg-white/10 hover:text-white transition">
                                                                         مثال
                                                                     </button>
                                                                 </div>
@@ -1021,7 +1021,7 @@ export default function App() {
                                                                                 if (u) openExternal(u);
                                                                             }
                                                                         }}
-                                                                        className="flex-1 grid place-items-center rounded-xl bg-gradient-to-br from-lime-400 via-emerald-500 to-lime-400 px-3 py-2 font-bold text-white shadow hover:shadow-lg animate-gradient-slow"
+                                                                        className="flex-1 grid place-items-center rounded-xl bg-gradient-to-br from-neutral-700 via-neutral-800 to-black px-3 py-2 font-bold text-white shadow hover:shadow-lg animate-gradient-slow"
                                                                     >
                                                                         فتح البوت ↗
                                                                     </button>

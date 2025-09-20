@@ -381,16 +381,16 @@ body {
     transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
   }
 
-  /* Turn background emerald on hover */
-  button:hover,
-  a[role="button"]:hover {
-    background-color: #10b981 !important; /* emerald-500 */
+  /* Neutral hover on generic buttons (exclude framework buttons) */
+  button:not(.nv-btn):not(.nv-btn-ghost):hover,
+  a[role="button"]:not(.nv-btn):not(.nv-btn-ghost):hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
   }
 
   /* Ensure our framework buttons behave the same */
   .nv-btn:hover,
   .nv-btn-ghost:hover {
-    background: #10b981 !important;
+    filter: brightness(1.06) !important;
   }
 
   /* Optional: add this class where you want text to flip to black on hover */
