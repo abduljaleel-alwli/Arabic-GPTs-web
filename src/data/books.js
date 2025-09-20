@@ -3,7 +3,7 @@ import pdf_0 from '../assets/pdfs/the-commanding-machine.pdf';
 import pdf_1 from '../assets/pdfs/the-comparing-machine.pdf';
 import pdf_2 from '../assets/pdfs/the-conversing-machine.pdf';
 import pdf_3 from '../assets/pdfs/the-creating-machine.pdf';
-import pdf_4 from '../assets/pdfs/the-dialogue-machine1.pdf';
+import pdf_4 from '../assets/pdfs/the-dialogue-machine.pdf';
 import pdf_5 from '../assets/pdfs/the-emerging-machine.pdf';
 import pdf_6 from '../assets/pdfs/the-feeling-machine.pdf';
 import pdf_7 from '../assets/pdfs/the-imitating-machine.pdf';
