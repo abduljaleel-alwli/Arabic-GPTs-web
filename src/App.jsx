@@ -58,6 +58,163 @@ const getPkgOrder = (name) => {
     return Number.POSITIVE_INFINITY;
 };
 
+const normalizeKeyName = (key) =>
+    stripTashkeel((key || '').toString())
+        .replace(/[^\u0600-\u06FFa-zA-Z0-9]+/g, '')
+        .toLowerCase();
+
+const buildAlias = (values) => {
+    const raw = new Set(values);
+    const normalized = new Set(values.map((value) => normalizeKeyName(value)).filter(Boolean));
+    return { raw, normalized };
+};
+
+const KEY_ALIAS = {
+    models: buildAlias([
+        '\ufffd?\ufffd?\ufffd?\ufffd?',
+        '\ufffd?\ufffd?\ufffd?\ufffd?\ufffd?\ufffd\ufffd\ufffd?',
+        '\u0627\u0644\u0646\u0645\u0648\u0630\u062c',
+        '\u0627\u0644\u0646\u0645\u0627\u0630\u062c',
+        '\u0646\u0645\u0648\u0630\u062c',
+        '\u0646\u0645\u0627\u0630\u062c',
+        'models',
+        'model',
+    ]),
+    about: buildAlias([
+        '\ufffd?\ufffd?\ufffd?\ufffd?',
+        '\u0646\u0628\u0630\u0629',
+        '\u0627\u0644\u0648\u0635\u0641',
+        '\u0648\u0635\u0641',
+        'about',
+        'description',
+    ]),
+    limits: buildAlias([
+        '\ufffd?\ufffd?\ufffd?\ufffd?',
+        '\u062d\u062f\u0648\u062f',
+        '\u0627\u0644\u062d\u062f\u0648\u062f',
+        '\u0627\u0644\u0642\u064a\u0648\u062f',
+        '\u0642\u064a\u0648\062f',
+        'limits',
+        'constraints',
+    ]),
+    example: buildAlias([
+        '\ufffd?\ufffd?\ufffd?\ufffd?',
+        '\u0645\u062b\u0627\u0644',
+        '\u0623\u0645\u062b\u0644\u0629',
+        '\u0627\u0644\u0623\u0645\u062b\u0644\u0629',
+        'example',
+        'examples',
+    ]),
+    url: buildAlias([
+        '\ufffd?\ufffd?\ufffd?\ufffd?',
+        'url',
+        'link',
+        'links',
+        '\u0627\u0644\u0631\u0627\u0628\u0637',
+        '\u0631\u0627\u0628\u0637',
+        '\u0627\u0644\u0631\u0627\0628\u0637\u0627\0644\u0645\0628\0627\0634\0631',
+        '\u0627\u0644\u0631\0627\0628\0637 \u0627\u0644\u0645\u0628\0627\0634\0631',
+        'href',
+        'primaryurl',
+        'directurl',
+    ]),
+};
+
+const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+const pickVariantValue = (source, alias, fallback) => {
+    if (!source || typeof source !== 'object') return undefined;
+    const keys = Object.keys(source);
+    for (const key of keys) {
+        if (!hasOwn(source, key)) continue;
+        const value = source[key];
+        if (value === undefined || value === null) continue;
+        const normalizedKey = normalizeKeyName(key);
+        if ((alias?.raw && alias.raw.has(key)) || (alias?.normalized && alias.normalized.has(normalizedKey))) {
+            if (typeof value === 'string') {
+                const trimmed = value.trim();
+                if (trimmed) return trimmed;
+            } else if (typeof value === 'object') {
+                if (Array.isArray(value)) {
+                    if (value.length) return value;
+                } else if (Object.keys(value).length) {
+                    return value;
+                }
+            } else {
+                return value;
+            }
+        }
+    }
+    if (fallback === 'object-with-url') {
+        for (const key of keys) {
+            if (!hasOwn(source, key)) continue;
+            const value = source[key];
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                const hasHttp = Object.values(value).some((v) => typeof v === 'string' && v.trim().startsWith('http'));
+                if (hasHttp) return value;
+            }
+        }
+    } else if (fallback === 'string-with-http') {
+        for (const key of keys) {
+            if (!hasOwn(source, key)) continue;
+            const value = source[key];
+            if (typeof value === 'string') {
+                const trimmed = value.trim();
+                if (trimmed.startsWith('http')) return trimmed;
+            }
+        }
+    }
+    return undefined;
+};
+
+const normalizeModels = (bot) => {
+    const raw = pickVariantValue(bot, KEY_ALIAS.models, 'object-with-url');
+    if (typeof raw === 'string') {
+        const trimmed = raw.trim();
+        return trimmed ? { '4O': trimmed } : {};
+    }
+    if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+        const cleaned = {};
+        for (const [key, val] of Object.entries(raw)) {
+            if (typeof val !== 'string') continue;
+            const trimmed = val.trim();
+            if (trimmed) cleaned[key] = trimmed;
+        }
+        return cleaned;
+    }
+    return {};
+};
+
+const normalizeTextField = (bot, alias, minLength = 0) => {
+    const raw = pickVariantValue(bot, alias);
+    if (typeof raw === 'string') return raw;
+    if (minLength > 0 && bot && typeof bot === 'object') {
+        for (const [key, value] of Object.entries(bot)) {
+            if (key === 'botTitle') continue;
+            if (typeof value === 'string') {
+                const trimmed = value.trim();
+                if (trimmed.length >= minLength) return trimmed;
+            }
+        }
+    }
+    return '';
+};
+
+const normalizeLinkField = (bot) => {
+    const raw = pickVariantValue(bot, KEY_ALIAS.url, 'string-with-http');
+    return typeof raw === 'string' ? raw : '';
+};
+
+const firstNonEmptyString = (...values) => {
+    for (const value of values) {
+        if (typeof value === 'string') {
+            const trimmed = value.trim();
+            if (trimmed) return trimmed;
+        }
+    }
+    return '';
+};
+
 // ————————————————————————————————————————————
 //  Bots Hub — 2025 Reactive Concept (RTL)
 //  • TailwindCSS for styling
@@ -305,13 +462,22 @@ export default function App() {
                         for (let i = 0; i < botsArr.length; i++) {
                             const b = botsArr[i] || {};
                             const title = (b?.botTitle || b?.title || "").toString().trim() || `بوت ${i + 1}`;
-                            const models = (b?.['النموذج']) || b?.models || {};
-                            const about = b?.['نبذة'] || b?.about || "";
-                            const limits = b?.['حدود'] || b?.limits || "";
-                            const example = b?.['مثال'] || b?.example || "";
-                            const model4o = (models && typeof models === 'object') ? (models['4O'] || models['4o'] || models['4o-mini'] || "") : "";
-                            const model5 = (models && typeof models === 'object') ? (models['5'] || models['gpt-5'] || "") : "";
-                            const primaryUrl = model4o || model5 || "#";
+                            const models = normalizeModels(b);
+                            const about = normalizeTextField(b, KEY_ALIAS.about, 24);
+                            const limits = normalizeTextField(b, KEY_ALIAS.limits, 8);
+                            const example = normalizeTextField(b, KEY_ALIAS.example, 8);
+                            const directLink = normalizeLinkField(b);
+                            const directUrl = firstNonEmptyString(
+                                directLink,
+                                typeof b?.url === 'string' ? b.url : '',
+                                typeof b?.link === 'string' ? b.link : ''
+                            );
+                            const model4o = firstNonEmptyString(models['4O'], models['4o'], models['4o-mini'], models['gpt-4o'], models['gpt4o']);
+                            const model5 = firstNonEmptyString(models['5'], models['gpt-5'], models['gpt5']);
+                            const primaryUrl = firstNonEmptyString(directUrl, model4o, model5) || "#";
+                            const canonicalModels = { ...models };
+                            if (model4o) canonicalModels['4O'] = model4o;
+                            if (model5) canonicalModels['5'] = model5;
                             const accent = pickAccentByCategory(category);
                             const id = `${(packageName || 'pkg').replace(/\s+/g, '-')}-${(category || 'cat').replace(/\s+/g, '-')}-${i}`;
                             flat.push({
@@ -323,7 +489,7 @@ export default function App() {
                                 category,
                                 accent,
                                 url: primaryUrl,
-                                models: { '4O': model4o, '5': model5 },
+                                models: canonicalModels,
                                 about,
                                 limits,
                                 example,
