@@ -1291,13 +1291,13 @@ export default function App() {
                                                                                     {b.title}
                                                                                 </h3>
                                                                                 <div className="mt-2 grid grid-cols-3 gap-3 text-xs pb-2">
-                                                                                    <button onClick={() => setBotModal({ type: "about", bot: b })} className="rounded-xl border border-white/15 bg-black px-2 py-1.5 font-bold text-white hover:bg-emerald-500 hover:text-black transition">
+                                                                                    <button onClick={() => setBotModal({ type: "about", bot: b })} className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15">
                                                                                         حول البوت
                                                                                     </button>
-                                                                                    <button onClick={() => setBotModal({ type: "limits", bot: b })} className="rounded-xl border border-white/15 bg-black px-2 py-1.5 font-bold text-white hover:bg-emerald-500 hover:text-black transition">
+                                                                                    <button onClick={() => setBotModal({ type: "limits", bot: b })} className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15">
                                                                                         قيود الاستخدام
                                                                                     </button>
-                                                                                    <button onClick={() => setBotModal({ type: "example", bot: b })} className="rounded-xl border border-white/15 bg-black px-2 py-1.5 font-bold text-white hover:bg-emerald-500 hover:text-black transition">
+                                                                                    <button onClick={() => setBotModal({ type: "example", bot: b })} className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15">
                                                                                         أمثلة
                                                                                     </button>
                                                                                 </div>
