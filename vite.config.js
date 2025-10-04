@@ -40,29 +40,42 @@ const forceUtf8HeadersPlugin = () => ({
     },
 });
 
-const sanitizeBase = (value) => {
-    if (!value) return undefined;
-    const trimmed = value.trim();
-    if (!trimmed) return undefined;
-    if (trimmed === ".") return "./";
-    return trimmed.endsWith("/") ? trimmed : `${trimmed}/`;
-};
+// const sanitizeBase = (value) => {
+//     if (!value) return undefined;
+//     const trimmed = value.trim();
+//     if (!trimmed) return undefined;
+//     if (trimmed === ".") return "./";
+//     return trimmed.endsWith("/") ? trimmed : `${trimmed}/`;
+// };
 
-const resolveBase = () => {
-    return (
-        sanitizeBase(process.env.VITE_BASE) ??
-        sanitizeBase(process.env.BASE) ??
-        sanitizeBase(process.env.BASE_PATH) ??
-        sanitizeBase(process.env.npm_config_base) ??
-        "/"
-    );
-};
+// const resolveBase = () => {
+//     return (
+//         sanitizeBase(process.env.VITE_BASE) ??
+//         sanitizeBase(process.env.BASE) ??
+//         sanitizeBase(process.env.BASE_PATH) ??
+//         sanitizeBase(process.env.npm_config_base) ??
+//         "/"
+//     );
+// };
 
-export default defineConfig(() => ({
-    base: resolveBase(),
-    plugins: [forceUtf8HeadersPlugin(), react()],
+// export default defineConfig(() => ({
+//     base: resolveBase(),
+//     plugins: [forceUtf8HeadersPlugin(), react()],
+//     server: {
+//         port: 5173,
+//         open: false,
+//     },
+// }));
+
+
+export default defineConfig({
+    base: "/web/", // <-- SET THE CORRECT BASE PATH HERE
+    plugins: [
+        /* forceUtf8HeadersPlugin() can be removed unless you specifically need it for local dev */
+        react()
+    ],
     server: {
         port: 5173,
         open: false,
     },
-}));
+});
