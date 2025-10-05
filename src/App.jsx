@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import bgVideoUrl from "../1080-60fps-ai.mp4";
 import { BOOKS as STATIC_BOOKS, SERIES as STATIC_SERIES } from "./data/books.js";
 // Use a base-aware public logo URL (SVG for crisp scaling on all DPIs)
-const logoUrl = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/") + "logo.svg";
+const logoUrl = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/") + "og-image.png";
 
 // ترتيب مخصص للباقات على الصفحة الرئيسية
 const PACKAGE_ORDER = [
