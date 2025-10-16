@@ -1214,21 +1214,22 @@ export default function App() {
                             {groupedPackages.map((pkg) => {
                                 const packagePdfUrl = getPackagePdfUrl(pkg.name);
                                 return (
-                                    <section key={pkg.key || pkg.name} aria-label={pkg.name} className="space-y-3 rounded-3xl border border-white/10 bg-white/5 p-3 md:p-5 shadow">
+                                    <section key={pkg.key || pkg.name} aria-label={pkg.name} className="space-y-3 rounded-3xl border border-white/10 bg-white/5 p-3 md:p-5 shadow ">
                                         {/* عنوان الحزمة */}
                                         <motion.div
                                             initial={{ opacity: 0, y: 6 }}
                                             whileInView={{ opacity: 1, y: 0 }}
                                             viewport={{ once: true, margin: "-10%" }}
                                             transition={{ duration: 0.35, ease: "easeOut" }}
-                                            className={`${expandedPkgs.has(pkg.key || pkg.name) ? 'sticky top-16 md:top-20 z-10 -mx-3 md:-mx-5 px-3 md:px-5 py-2 rounded-2xl bg-neutral-950/70 backdrop-blur supports-[backdrop-filter]:bg-neutral-900/55' : ''} flex items-center gap-2`}
+                                            className={`${expandedPkgs.has(pkg.key || pkg.name)
+                                                ? 'sticky top-16 md:top-20 z-10 -mx-3 md:-mx-5 px-3 md:px-5 py-2 rounded-2xl bg-neutral-950/70 backdrop-blur supports-[backdrop-filter]:bg-neutral-900/55'
+                                                : ''} flex justify-start`}
                                         >
-                                            <div className="h-px flex-1 bg-gradient-to-l from-white/10 to-transparent" />
                                             <button
                                                 type="button"
                                                 onClick={() => {
                                                     const k = pkg.key || pkg.name;
-                                                    setExpandedPkgs((prev) => {
+                                                    setExpandedPkgs(prev => {
                                                         const next = new Set(prev);
                                                         if (next.has(k)) next.delete(k); else next.add(k);
                                                         return next;
@@ -1236,7 +1237,7 @@ export default function App() {
                                                 }}
                                                 aria-expanded={expandedPkgs.has(pkg.key || pkg.name)}
                                                 aria-controls={`pkg-panel-${(pkg.key || pkg.name || '').toString().replace(/\s+/g, '-').replace(/[^\w\-]/g, '')}`}
-                                                className={`inline-flex items-center gap-2 text-xl md:text-2xl font-extrabold text-white rounded-full border border-white/10 px-4 py-1.5 bg-neutral-800 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-400 hover:bg-emerald-500`}
+                                                className="inline-flex items-center gap-2 text-xl md:text-2xl font-extrabold text-white rounded-full border border-white/10 px-4 py-1.5 bg-neutral-800 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-400 hover:bg-emerald-500"
                                             >
                                                 <span className="opacity-90">
                                                     {(CATEGORY_ICONS[pkg.name] || CATEGORY_ICONS.default)}
@@ -1244,13 +1245,13 @@ export default function App() {
                                                 {pkg.name}
                                                 <span className="mx-1 text-xs font-semibold text-white/80 bg-black/30 px-2 py-0.5 rounded-lg border border-white/10">{pkg.cats.length}</span>
                                                 <span className={`ms-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-black/30 border border-white/10 text-white/80 transition-transform ${expandedPkgs.has(pkg.key || pkg.name) ? 'rotate-180' : 'rotate-0'}`}>
-                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5H7z" /></svg>
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5H7z" /></svg>
                                                 </span>
                                             </button>
-                                            <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
                                         </motion.div>
-                                        <div className="flex flex-col items-center justify-center gap-3 md:flex-row md:items-center">
-                                            <div className="-mt-1 text-center text-[11px] text-white/60 space-y-0.5">
+
+                                        <div className="flex flex-col items-start justify-start gap-3 md:flex-row md:items-start md:justify-start w-full">
+                                            <div className="-mt-1 text-right text-[11px] text-white/60 space-y-0.5">
                                                 {pkg.subtitle && <p>{pkg.subtitle}</p>}
                                                 <p>حُزمة • {pkg.cats.length} فئات</p>
                                             </div>
@@ -1259,7 +1260,7 @@ export default function App() {
                                                 <a
                                                     href={packagePdfUrl}
                                                     download
-                                                    className="inline-flex items-center gap-1 rounded-md bg-emerald-400/90 px-2 py-1 text-[11px] font-semibold leading-none text-emerald-950 hover:bg-emerald-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200"
+                                                    className="inline-flex items-center gap-1 rounded-md bg-emerald-50/90 px-2 py-1 text-[11px] font-semibold leading-none text-emerald-950 hover:bg-emerald focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-100"
                                                 >
                                                     <svg
                                                         className="h-3 w-3"
@@ -1294,7 +1295,7 @@ export default function App() {
                                                 >
                                                     {pkg.cats.map((cat, idx) => (
                                                         <div key={`${pkg.name}-${cat.name}`} className="space-y-2">
-                                                            <div className="flex items-center gap-2 mb-1 justify-center">
+                                                            <div className="flex items-center gap-2 mb-1 justify-end">
                                                                 <div className="hidden md:block h-px flex-1 bg-gradient-to-l from-white/10 to-transparent" />
                                                                 <span className={`inline-flex items-center gap-1 text-sm md:text-base text-white/90 rounded-full border border-white/10 px-2 py-0.5 bg-gradient-to-br ${cat.accent} shadow-[0_0_18px_rgba(0,0,0,0.35)] ring-1 ring-white/10 backdrop-blur-sm animate-gradient-slow`}>
                                                                     {cat.name}
