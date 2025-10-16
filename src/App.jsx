@@ -2,8 +2,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import bgVideoUrl from "../1080-60fps-ai.mp4";
 import { BOOKS as STATIC_BOOKS, SERIES as STATIC_SERIES } from "./data/books.js";
+import packagePdfManifest from "./data/packagePdfs.json";
 // Use a base-aware public logo URL (SVG for crisp scaling on all DPIs)
-const logoUrl = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/") + "og-image.png";
+const BASE_URL = ((import.meta && import.meta.env && import.meta.env.BASE_URL) || "/");
+const resolvePublicPath = (path) => {
+    const normalizedBase = BASE_URL.endsWith("/") ? BASE_URL : `${BASE_URL}/`;
+    const normalizedPath = (path || "").toString().replace(/^\/+/, "");
+    return `${normalizedBase}${normalizedPath}`;
+};
+const logoUrl = resolvePublicPath("og-image.png");
 
 // ترتيب مخصص للباقات على الصفحة الرئيسية
 const PACKAGE_ORDER = [
@@ -91,6 +98,33 @@ const normalizeKeyName = (key) =>
     stripTashkeel((key || '').toString())
         .replace(/[^\u0600-\u06FFa-zA-Z0-9]+/g, '')
         .toLowerCase();
+
+const packagePdfEntries = Array.isArray(packagePdfManifest) ? packagePdfManifest : [];
+const PACKAGE_PDF_LOOKUP = (() => {
+    const direct = new Map();
+    const normalized = new Map();
+    for (const entry of packagePdfEntries) {
+        const rawTitle = sanitizeText(entry?.title, 200);
+        const file = (entry?.file ?? '').toString().trim();
+        if (!rawTitle || !file) continue;
+        direct.set(rawTitle, file);
+        const normalizedKey = normalizeKeyName(rawTitle);
+        if (normalizedKey) normalized.set(normalizedKey, file);
+    }
+    return { direct, normalized };
+})();
+const getPackagePdfFile = (packageName) => {
+    if (!packageName) return null;
+    if (PACKAGE_PDF_LOOKUP.direct.has(packageName)) return PACKAGE_PDF_LOOKUP.direct.get(packageName);
+    const normalizedKey = normalizeKeyName(packageName);
+    if (!normalizedKey) return null;
+    return PACKAGE_PDF_LOOKUP.normalized.get(normalizedKey) || null;
+};
+const getPackagePdfUrl = (packageName) => {
+    const file = getPackagePdfFile(packageName);
+    if (!file) return null;
+    return resolvePublicPath(file);
+};
 
 const buildAlias = (values) => {
     const raw = new Set();
@@ -496,8 +530,7 @@ export default function App() {
         let isMounted = true;
         (async () => {
             try {
-                const base = (import.meta && import.meta.env && import.meta.env.BASE_URL) || "/";
-                const res = await fetch(`${base}new_bots.json`, { cache: "no-store" });
+                const res = await fetch(resolvePublicPath("new_bots.json"), { cache: "no-store" });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
 
@@ -1178,177 +1211,206 @@ export default function App() {
 
                         {/* الحِزَم ← الفئات ← البوتات */}
                         <div className="mt-4 space-y-8">
-                            {groupedPackages.map((pkg) => (
-                                <section key={pkg.key || pkg.name} aria-label={pkg.name} className="space-y-3 rounded-3xl border border-white/10 bg-white/5 p-3 md:p-5 shadow">
-                                    {/* عنوان الحزمة */}
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 6 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true, margin: "-10%" }}
-                                        transition={{ duration: 0.35, ease: "easeOut" }}
-                                        className={`${expandedPkgs.has(pkg.key || pkg.name) ? 'sticky top-16 md:top-20 z-10 -mx-3 md:-mx-5 px-3 md:px-5 py-2 rounded-2xl bg-neutral-950/70 backdrop-blur supports-[backdrop-filter]:bg-neutral-900/55' : ''} flex items-center gap-2`}
-                                    >
-                                        <div className="h-px flex-1 bg-gradient-to-l from-white/10 to-transparent" />
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                const k = pkg.key || pkg.name;
-                                                setExpandedPkgs((prev) => {
-                                                    const next = new Set(prev);
-                                                    if (next.has(k)) next.delete(k); else next.add(k);
-                                                    return next;
-                                                });
-                                            }}
-                                            aria-expanded={expandedPkgs.has(pkg.key || pkg.name)}
-                                            aria-controls={`pkg-panel-${(pkg.key || pkg.name || '').toString().replace(/\s+/g, '-').replace(/[^\w\-]/g, '')}`}
-                                            className={`inline-flex items-center gap-2 text-xl md:text-2xl font-extrabold text-white rounded-full border border-white/10 px-4 py-1.5 bg-neutral-800 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-400 hover:bg-emerald-500`}
+                            {groupedPackages.map((pkg) => {
+                                const packagePdfUrl = getPackagePdfUrl(pkg.name);
+                                return (
+                                    <section key={pkg.key || pkg.name} aria-label={pkg.name} className="space-y-3 rounded-3xl border border-white/10 bg-white/5 p-3 md:p-5 shadow">
+                                        {/* عنوان الحزمة */}
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 6 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true, margin: "-10%" }}
+                                            transition={{ duration: 0.35, ease: "easeOut" }}
+                                            className={`${expandedPkgs.has(pkg.key || pkg.name) ? 'sticky top-16 md:top-20 z-10 -mx-3 md:-mx-5 px-3 md:px-5 py-2 rounded-2xl bg-neutral-950/70 backdrop-blur supports-[backdrop-filter]:bg-neutral-900/55' : ''} flex items-center gap-2`}
                                         >
-                                            <span className="opacity-90">
-                                                {(CATEGORY_ICONS[pkg.name] || CATEGORY_ICONS.default)}
-                                            </span>
-                                            {pkg.name}
-                                            <span className="mx-1 text-xs font-semibold text-white/80 bg-black/30 px-2 py-0.5 rounded-lg border border-white/10">{pkg.cats.length}</span>
-                                            <span className={`ms-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-black/30 border border-white/10 text-white/80 transition-transform ${expandedPkgs.has(pkg.key || pkg.name) ? 'rotate-180' : 'rotate-0'}`}>
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5H7z" /></svg>
-                                            </span>
-                                        </button>
-                                        <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
-                                    </motion.div>
-                                    <div className="-mt-1 text-center text-[11px] text-white/60 space-y-0.5">
-                                        {pkg.subtitle && <p>{pkg.subtitle}</p>}
-                                        <p>حُزمة • {pkg.cats.length} فئات</p>
-                                    </div>
-
-                                    {/* فئات الحزمة */}
-                                    <AnimatePresence initial={false}>
-                                        {expandedPkgs.has(pkg.key || pkg.name) && (
-                                            <motion.div
-                                                key={`pkg-panel-${(pkg.key || pkg.name || '').toString().replace(/\s+/g, '-').replace(/[^\w\-]/g, '')}`}
-                                                id={`pkg-panel-${(pkg.key || pkg.name || '').toString().replace(/\s+/g, '-').replace(/[^\w\-]/g, '')}`}
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: 'auto', opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.35, ease: 'easeInOut' }}
-                                                className="overflow-hidden mt-3 space-y-5"
+                                            <div className="h-px flex-1 bg-gradient-to-l from-white/10 to-transparent" />
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const k = pkg.key || pkg.name;
+                                                    setExpandedPkgs((prev) => {
+                                                        const next = new Set(prev);
+                                                        if (next.has(k)) next.delete(k); else next.add(k);
+                                                        return next;
+                                                    });
+                                                }}
+                                                aria-expanded={expandedPkgs.has(pkg.key || pkg.name)}
+                                                aria-controls={`pkg-panel-${(pkg.key || pkg.name || '').toString().replace(/\s+/g, '-').replace(/[^\w\-]/g, '')}`}
+                                                className={`inline-flex items-center gap-2 text-xl md:text-2xl font-extrabold text-white rounded-full border border-white/10 px-4 py-1.5 bg-neutral-800 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-400 hover:bg-emerald-500`}
                                             >
-                                                {pkg.cats.map((cat, idx) => (
-                                                    <div key={`${pkg.name}-${cat.name}`} className="space-y-2">
-                                                        <div className="flex items-center gap-2 mb-1 justify-center">
-                                                            <div className="hidden md:block h-px flex-1 bg-gradient-to-l from-white/10 to-transparent" />
-                                                            <span className={`inline-flex items-center gap-1 text-sm md:text-base text-white/90 rounded-full border border-white/10 px-2 py-0.5 bg-gradient-to-br ${cat.accent} shadow-[0_0_18px_rgba(0,0,0,0.35)] ring-1 ring-white/10 backdrop-blur-sm animate-gradient-slow`}>
-                                                                {cat.name}
-                                                            </span>
-                                                            <span className="hidden md:inline text-xs text-white/60">{cat.rows.length} بوت</span>
-                                                            <div className="hidden md:block h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
-                                                        </div>
-                                                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                                                            <AnimatePresence mode="popLayout">
-                                                                {cat.rows.map((b) => {
-                                                                    const rawModelEntries = Object.entries(b?.models || {});
-                                                                    const validModelEntries = rawModelEntries
-                                                                        .map(([model, url]) => [model, toSafeUrl(url)])
-                                                                        .filter(([, url]) => !!url);
-                                                                    const hasMultipleModels = validModelEntries.length > 1;
-                                                                    const primaryLink = toSafeUrl(b?.url);
-                                                                    const launchLink = primaryLink || (validModelEntries[0]?.[1] || '');
-                                                                    const chatModelNames = new Set(['4o', 'gpt-4o', 'gpt4o', '4o-mini', 'mini', 'gpt-5', 'gpt5', '5']);
-                                                                    const hasChatModels = validModelEntries.some(([model]) => chatModelNames.has((model || '').toString().toLowerCase()));
-                                                                    const launchHost = (() => {
-                                                                        try {
-                                                                            return launchLink ? new URL(launchLink).hostname || '' : '';
-                                                                        } catch {
-                                                                            return '';
-                                                                        }
-                                                                    })();
-                                                                    const isChatGPTLaunch = launchHost.endsWith('chatgpt.com');
-                                                                    const buttonLabel = (() => {
-                                                                        if (hasMultipleModels) {
-                                                                            return hasChatModels ? 'اختيار النموذج' : 'عرض الروابط';
-                                                                        }
-                                                                        if (launchLink) {
-                                                                            return isChatGPTLaunch ? 'تشغيل في ChatGPT' : 'فتح الرابط';
-                                                                        }
-                                                                        return 'غير متاح';
-                                                                    })();
-                                                                    const canLaunch = hasMultipleModels || Boolean(launchLink);
-                                                                    const copyDisabled = !launchLink;
+                                                <span className="opacity-90">
+                                                    {(CATEGORY_ICONS[pkg.name] || CATEGORY_ICONS.default)}
+                                                </span>
+                                                {pkg.name}
+                                                <span className="mx-1 text-xs font-semibold text-white/80 bg-black/30 px-2 py-0.5 rounded-lg border border-white/10">{pkg.cats.length}</span>
+                                                <span className={`ms-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-black/30 border border-white/10 text-white/80 transition-transform ${expandedPkgs.has(pkg.key || pkg.name) ? 'rotate-180' : 'rotate-0'}`}>
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5H7z" /></svg>
+                                                </span>
+                                            </button>
+                                            <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+                                        </motion.div>
+                                        <div className="flex flex-col items-center justify-center gap-3 md:flex-row md:items-center">
+                                            <div className="-mt-1 text-center text-[11px] text-white/60 space-y-0.5">
+                                                {pkg.subtitle && <p>{pkg.subtitle}</p>}
+                                                <p>حُزمة • {pkg.cats.length} فئات</p>
+                                            </div>
 
-                                                                    return (
-                                                                        <motion.div
-                                                                            key={b.id}
-                                                                            initial={{ opacity: 0, y: 18 }}
-                                                                            animate={{ opacity: 1, y: 0 }}
-                                                                            exit={{ opacity: 0, y: -10 }}
-                                                                            transition={{ duration: 0.3, ease: "easeOut" }}
-                                                                            className="pixel-card group relative overflow-hidden rounded-2xl bg-neutral-900/60 p-3 shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition will-change-transform"
-                                                                        >
-                                                                            <div className={`absolute inset-0 opacity-60 bg-gradient-to-br ${getAccent(b)}`} />
-                                                                            <div className="relative z-10 flex h-full flex-col">
-                                                                                <div className="flex items-center gap-2 text-xs">
-                                                                                    <div className="ml-auto" />
-                                                                                </div>
-                                                                                <h3 className="mt-2 line-clamp-2 text-base md:text-lg leading-snug font-bold tracking-tight drop-shadow-sm min-h-[2.75rem] md:min-h-[3.125rem]">
-                                                                                    {b.title}
-                                                                                </h3>
-                                                                                <div className="mt-2 grid grid-cols-3 gap-3 text-xs pb-2">
-                                                                                    <button onClick={() => setBotModal({ type: "about", bot: b })} className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15">
-                                                                                        حول البوت
-                                                                                    </button>
-                                                                                    <button onClick={() => setBotModal({ type: "limits", bot: b })} className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15">
-                                                                                        قيود الاستخدام
-                                                                                    </button>
-                                                                                    <button onClick={() => setBotModal({ type: "example", bot: b })} className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15">
-                                                                                        أمثلة
-                                                                                    </button>
-                                                                                </div>
-                                                                                {/* إجراءات إضافية */}
-                                                                                <div className="mt-auto flex items-center gap-2 text-xs">
-                                                                                    <button
-                                                                                        type="button"
-                                                                                        onMouseEnter={() => {
-                                                                                            if (launchLink) warmUp(launchLink);
-                                                                                        }}
-                                                                                        onClick={() => {
-                                                                                            if (hasMultipleModels) {
-                                                                                                setBotModal({ type: 'choose-model', bot: b });
-                                                                                                return;
-                                                                                            }
-                                                                                            if (launchLink) {
-                                                                                                openExternal(launchLink);
-                                                                                                return;
-                                                                                            }
-                                                                                            openExternal('');
-                                                                                        }}
-                                                                                        disabled={!canLaunch}
-                                                                                        className="flex-1 grid place-items-center rounded-xl bg-gradient-to-br from-lime-400 via-emerald-500 to-lime-400 px-3 py-2 font-bold text-white shadow hover:shadow-lg animate-gradient-slow disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:shadow-none"
-                                                                                    >
-                                                                                        {buttonLabel}
-                                                                                    </button>
-                                                                                    <button
-                                                                                        type="button"
-                                                                                        onClick={() => copyLink(launchLink)}
-                                                                                        disabled={copyDisabled}
-                                                                                        className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white/10"
-                                                                                        title="نسخ الرابط"
-                                                                                    >
-                                                                                        انسخ الرابط
-                                                                                    </button>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className="pointer-events-none absolute -inset-[1px] bg-[conic-gradient(from_180deg_at_50%_50%,transparent_0,rgba(255,255,255,0.12)_20%,transparent_35%)] opacity-0 group-hover:opacity-100 transition duration-700" />
-                                                                        </motion.div>
-                                                                    );
-                                                                })}
+                                            {packagePdfUrl && (
+                                                <a
+                                                    href={packagePdfUrl}
+                                                    download
+                                                    className="inline-flex items-center gap-1 rounded-md bg-emerald-400/90 px-2 py-1 text-[11px] font-semibold leading-none text-emerald-950 hover:bg-emerald-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200"
+                                                >
+                                                    <svg
+                                                        className="h-3 w-3"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="1.6"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        aria-hidden="true"
+                                                    >
+                                                        <path d="M12 3v12" />
+                                                        <path d="M7 11l5 5 5-5" />
+                                                        <path d="M5 19h14" />
+                                                    </svg>
+                                                    تحميل الباقة
+                                                </a>
+                                            )}
+                                        </div>
 
-                                                            </AnimatePresence>
+                                        {/* فئات الحزمة */}
+                                        <AnimatePresence initial={false}>
+                                            {expandedPkgs.has(pkg.key || pkg.name) && (
+                                                <motion.div
+                                                    key={`pkg-panel-${(pkg.key || pkg.name || '').toString().replace(/\s+/g, '-').replace(/[^\w\-]/g, '')}`}
+                                                    id={`pkg-panel-${(pkg.key || pkg.name || '').toString().replace(/\s+/g, '-').replace(/[^\w\-]/g, '')}`}
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.35, ease: 'easeInOut' }}
+                                                    className="overflow-hidden mt-3 space-y-5"
+                                                >
+                                                    {pkg.cats.map((cat, idx) => (
+                                                        <div key={`${pkg.name}-${cat.name}`} className="space-y-2">
+                                                            <div className="flex items-center gap-2 mb-1 justify-center">
+                                                                <div className="hidden md:block h-px flex-1 bg-gradient-to-l from-white/10 to-transparent" />
+                                                                <span className={`inline-flex items-center gap-1 text-sm md:text-base text-white/90 rounded-full border border-white/10 px-2 py-0.5 bg-gradient-to-br ${cat.accent} shadow-[0_0_18px_rgba(0,0,0,0.35)] ring-1 ring-white/10 backdrop-blur-sm animate-gradient-slow`}>
+                                                                    {cat.name}
+                                                                </span>
+                                                                <span className="hidden md:inline text-xs text-white/60">{cat.rows.length} بوت</span>
+                                                                <div className="hidden md:block h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+                                                            </div>
+                                                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                                                <AnimatePresence mode="popLayout">
+                                                                    {cat.rows.map((b) => {
+                                                                        const rawModelEntries = Object.entries(b?.models || {});
+                                                                        const validModelEntries = rawModelEntries
+                                                                            .map(([model, url]) => [model, toSafeUrl(url)])
+                                                                            .filter(([, url]) => !!url);
+                                                                        const hasMultipleModels = validModelEntries.length > 1;
+                                                                        const primaryLink = toSafeUrl(b?.url);
+                                                                        const launchLink = primaryLink || (validModelEntries[0]?.[1] || '');
+                                                                        const chatModelNames = new Set(['4o', 'gpt-4o', 'gpt4o', '4o-mini', 'mini', 'gpt-5', 'gpt5', '5']);
+                                                                        const hasChatModels = validModelEntries.some(([model]) => chatModelNames.has((model || '').toString().toLowerCase()));
+                                                                        const launchHost = (() => {
+                                                                            try {
+                                                                                return launchLink ? new URL(launchLink).hostname || '' : '';
+                                                                            } catch {
+                                                                                return '';
+                                                                            }
+                                                                        })();
+                                                                        const isChatGPTLaunch = launchHost.endsWith('chatgpt.com');
+                                                                        const buttonLabel = (() => {
+                                                                            if (hasMultipleModels) {
+                                                                                return hasChatModels ? 'اختيار النموذج' : 'عرض الروابط';
+                                                                            }
+                                                                            if (launchLink) {
+                                                                                return isChatGPTLaunch ? 'تشغيل في ChatGPT' : 'فتح الرابط';
+                                                                            }
+                                                                            return 'غير متاح';
+                                                                        })();
+                                                                        const canLaunch = hasMultipleModels || Boolean(launchLink);
+                                                                        const copyDisabled = !launchLink;
+
+                                                                        return (
+                                                                            <motion.div
+                                                                                key={b.id}
+                                                                                initial={{ opacity: 0, y: 18 }}
+                                                                                animate={{ opacity: 1, y: 0 }}
+                                                                                exit={{ opacity: 0, y: -10 }}
+                                                                                transition={{ duration: 0.3, ease: "easeOut" }}
+                                                                                className="pixel-card group relative overflow-hidden rounded-2xl bg-neutral-900/60 p-3 shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition will-change-transform"
+                                                                            >
+                                                                                <div className={`absolute inset-0 opacity-60 bg-gradient-to-br ${getAccent(b)}`} />
+                                                                                <div className="relative z-10 flex h-full flex-col">
+                                                                                    <div className="flex items-center gap-2 text-xs">
+                                                                                        <div className="ml-auto" />
+                                                                                    </div>
+                                                                                    <h3 className="mt-2 line-clamp-2 text-base md:text-lg leading-snug font-bold tracking-tight drop-shadow-sm min-h-[2.75rem] md:min-h-[3.125rem]">
+                                                                                        {b.title}
+                                                                                    </h3>
+                                                                                    <div className="mt-2 grid grid-cols-3 gap-3 text-xs pb-2">
+                                                                                        <button onClick={() => setBotModal({ type: "about", bot: b })} className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15">
+                                                                                            حول البوت
+                                                                                        </button>
+                                                                                        <button onClick={() => setBotModal({ type: "limits", bot: b })} className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15">
+                                                                                            قيود الاستخدام
+                                                                                        </button>
+                                                                                        <button onClick={() => setBotModal({ type: "example", bot: b })} className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15">
+                                                                                            أمثلة
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    {/* إجراءات إضافية */}
+                                                                                    <div className="mt-auto flex items-center gap-2 text-xs">
+                                                                                        <button
+                                                                                            type="button"
+                                                                                            onMouseEnter={() => {
+                                                                                                if (launchLink) warmUp(launchLink);
+                                                                                            }}
+                                                                                            onClick={() => {
+                                                                                                if (hasMultipleModels) {
+                                                                                                    setBotModal({ type: 'choose-model', bot: b });
+                                                                                                    return;
+                                                                                                }
+                                                                                                if (launchLink) {
+                                                                                                    openExternal(launchLink);
+                                                                                                    return;
+                                                                                                }
+                                                                                                openExternal('');
+                                                                                            }}
+                                                                                            disabled={!canLaunch}
+                                                                                            className="flex-1 grid place-items-center rounded-xl bg-gradient-to-br from-lime-400 via-emerald-500 to-lime-400 px-3 py-2 font-bold text-white shadow hover:shadow-lg animate-gradient-slow disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:shadow-none"
+                                                                                        >
+                                                                                            {buttonLabel}
+                                                                                        </button>
+                                                                                        <button
+                                                                                            type="button"
+                                                                                            onClick={() => copyLink(launchLink)}
+                                                                                            disabled={copyDisabled}
+                                                                                            className="rounded-xl border border-white/10 bg-white/10 px-3 py-2 font-bold text-white transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white/10"
+                                                                                            title="نسخ الرابط"
+                                                                                        >
+                                                                                            انسخ الرابط
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="pointer-events-none absolute -inset-[1px] bg-[conic-gradient(from_180deg_at_50%_50%,transparent_0,rgba(255,255,255,0.12)_20%,transparent_35%)] opacity-0 group-hover:opacity-100 transition duration-700" />
+                                                                            </motion.div>
+                                                                        );
+                                                                    })}
+
+                                                                </AnimatePresence>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ))}
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </section>
-                            ))}
+                                                    ))}
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </section>
+                                );
+                            })}
                         </div>
                     </section>
 
